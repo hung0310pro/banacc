@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\CatalogChildModel;
 use App\PriceMailModel;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use App\AccModel;
 use App\User;
@@ -92,8 +93,9 @@ class HomeCatalogController extends Controller
 	public function show($id)
 	{
 		$priceMailModel = PriceMailModel::all();
+		$usersAdmin = User::where('level',1)->get();
 		$catalogChild = CatalogChildModel::select('id', 'name', 'price')->where('id_catalog', $id)->get();
-		return view('acc.acc', ['catalogChild' => $catalogChild, 'priceMailModel' => $priceMailModel]);
+		return view('acc.acc', ['catalogChild' => $catalogChild, 'priceMailModel' => $priceMailModel,'usersAdmin' => $usersAdmin]);
 	}
 
 	/**
@@ -128,5 +130,11 @@ class HomeCatalogController extends Controller
 	public function destroy($id)
 	{
 		//
+	}
+
+	public function indexAccount(){
+		$user = Auth::user();
+		$listacc = AccModel::where('accstatus',2)->where('user_id',$user->id)->get();
+		return view('acc.listacc',['listacc' => $listacc]);
 	}
 }

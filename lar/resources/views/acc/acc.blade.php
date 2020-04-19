@@ -1,9 +1,12 @@
 @extends('layouts.headerhome')
 @section('content')
-	<?php
-	$contact = App\ContactModel::all();
-
-	?>
+    <?php
+    $contact = App\ContactModel::all();
+    $phone = "";
+    foreach ($usersAdmin as $value){
+        $phone = $value->phone;
+    }
+    ?>
     <div class="be-content">
         <div class="main-content container-fluid">
             <div class="row">
@@ -17,9 +20,9 @@
                                 @csrf
                                 <div class="xs-pt-10 form-group">
                                     <select class="form-control" name="id_catalog" id="id_catalog">
-										<?php foreach ($catalogChild as $value) : ?>
+                                        <?php foreach ($catalogChild as $value) : ?>
                                         <option value="<?= $value->id ?>"><?= $value->name ?></option>
-										<?php endforeach; ?>
+                                        <?php endforeach; ?>
                                     </select>
                                 </div>
                                 <input type="hidden" id="giaacc" name="giaacc" value="0">
@@ -40,9 +43,9 @@
                                     </div>
                                 </div>
                             </form>
-							<?php foreach ($catalogChild as $value) : ?>
+                            <?php foreach ($catalogChild as $value) : ?>
                             <input type="hidden" value="<?= $value->price ?>" id="catalog<?= $value->id ?>">
-							<?php endforeach; ?>
+                            <?php endforeach; ?>
                         </div>
                     </div>
                 </div>
@@ -56,19 +59,19 @@
                             <center><img src="{{ url('img/avatar.png') }}" alt="Avatar"></center>
                             <br>
                             <center><span style="font-size: 18px;">HotMail Reg Theo Yêu Cầu Vui Lòng Liên Hệ Qua Facebook Hoặc Zalo Qua SĐT <font
-                                            color="red">{{ Auth::user()->phone }} </font>Hộ Mình Nhé!</span></center>
+                                            color="red"><?= $phone ?> </font>Hộ Mình Nhé!</span></center>
                             <br>
                             <center>
-								<?php
-								$linkFace = "";
-								$linkZalo = "";
-								?>
+                                <?php
+                                $linkFace = "";
+                                $linkZalo = "";
+                                ?>
 
-								<?php foreach ($contact as $value) : ?>
-								<?php
-									$linkFace = $value->linkfacebook;
-									$linkZalo = $value->linkzalo;
-									?>
+                                <?php foreach ($contact as $value) : ?>
+                                <?php
+                                    $linkFace = $value->linkfacebook;
+                                    $linkZalo = $value->linkzalo;
+                                    ?>
                                  <?php endforeach; ?>
 
                                 <a class="btn btn-primary" href="<?= $linkFace ?>">
@@ -93,14 +96,14 @@
                             <div class="block-content">
                                 <table class="table table-borderless table-hover">
                                     <tbody>
-									<?php foreach ($priceMailModel as $value) : ?>
+                                    <?php foreach ($priceMailModel as $value) : ?>
                                     <tr>
                                         <td>
                                             <strong><?= $value->name ?> = <font color="red"><?= $value->price ?></font>
                                                 /1 Mail</strong>
                                         </td>
                                     </tr>
-									<?php endforeach; ?>
+                                    <?php endforeach; ?>
                                     </tbody>
                                 </table>
 
@@ -220,9 +223,7 @@
                             }, 100);
                         } else if (data == 1) {
                             alert('Thanh toán thành công');
-                            window.setTimeout(function () {
-                                location.reload()
-                            }, 100);
+                            window.location.replace('{!! route('listaccount') !!}');
                         }
                     }
                 });

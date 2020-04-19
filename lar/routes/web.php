@@ -33,4 +33,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'adminLoginMiddleware'], func
 	Route::post('catalogchild',['as' => 'createcatalogchild', 'uses' => 'CatalogChildController@create'])->middleware('permissionLoginMiddleware');;
 
 	Route::resource('homeacc', 'HomeCatalogController');
+
+	Route::get('listaccount', ['as' => 'listaccount', 'uses' => 'HomeCatalogController@indexAccount']);
 });
